@@ -1,4 +1,4 @@
-module git.querycap.com/tools/conmongo
+module github.com/RXDA/confmongo
 
 go 1.14
 
