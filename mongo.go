@@ -11,12 +11,12 @@ import (
 )
 
 type Mongo struct {
-	Host     string `env:",upstream"` // mongodb://simpleUser:simplePass@your.db.ip.address:27017/foo
-	Port     int
-	User     string           `env:""`
-	Password envconf.Password `env:""`
-	DB       string
-	*options.ClientOptions
+	Host                   string `env:",upstream"` // mongodb://simpleUser:simplePass@your.db.ip.address:27017/foo
+	Port                   int
+	User                   string           `env:""`
+	Password               envconf.Password `env:""`
+	DB                     string
+	*options.ClientOptions `env:"-"`
 }
 
 func (m *Mongo) SetDefaults() {
@@ -38,7 +38,7 @@ func (m *Mongo) url() string {
 }
 
 func (m *Mongo) conn() *options.ClientOptions {
-	clientOption:= options.Client().ApplyURI(m.url()).SetMaxPoolSize(10)
+	clientOption := options.Client().ApplyURI(m.url()).SetMaxPoolSize(10)
 	return clientOption
 }
 
@@ -76,6 +76,6 @@ func (m *Mongo) LivenessCheck() map[string]string {
 	return res
 }
 
-func (m *Mongo) Get(ctx context.Context) (*mongo.Client,error) {
+func (m *Mongo) Get(ctx context.Context) (*mongo.Client, error) {
 	return mongo.Connect(ctx, m.ClientOptions)
 }
